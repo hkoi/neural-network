@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Confusion matrix</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> 
+  </head>
+
+  <body>
+    <div class="container">
+      
+<script src="dataset.js" type="text/javascript"></script>
+<script src="confusion_matrix.js" type="text/javascript"></script>
+
+<script>
+
+  
+  var parent_div = document.body;
+  var width = 1280;
+  var height = 700;
+
+  var demo_div = document.createElement('div');
+  var control_panel = document.createElement('div');
+  var control_panel_meta = document.createElement('div');
+  var control_panel_options = document.createElement('div');
+  var description_panel = document.createElement('div');
+  var canvas = document.createElement('canvas');
+  control_panel.appendChild(control_panel_meta);
+  control_panel.appendChild(control_panel_options);
+  demo_div.appendChild(control_panel);
+  demo_div.appendChild(description_panel);
+  demo_div.appendChild(canvas);
+  parent_div.appendChild(demo_div);
+  demo_div.className = 'demo_main';
+  demo_div.style.width = width+"px";
+  control_panel.className = 'demo_control_panel';
+  control_panel_meta.className = 'demo_control_panel_meta';
+  control_panel_options.className = 'demo_control_panel_options';
+  control_panel_meta.innerHTML = '';
+  description_panel.className = 'demo_description_panel';
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style = 'margin:auto; display:block;';
+
+  function set_text_panel(description_panel_, text, refresh_mathjax) {
+    description_panel_.innerHTML = text;
+    if (refresh_mathjax) {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub, description_panel_]);
+    }
+  };
+
+  function set_control_panel_height(description_panel_, height) {
+    description_panel_.style.height = height+"px";
+    description_panel_.style.padding = "15px"; 
+  };
+  
+  function add_control_panel_action(text, action) {
+    var control_panel_option = document.createElement('div');
+    control_panel_option.className = 'demo_control_panel_option';
+    control_panel_option.innerHTML = text;
+    control_panel_option.onclick = action;
+    control_panel_options.appendChild(control_panel_option);
+  };
+
+  function add_control_panel_menu(options, action) {
+    var control_panel_menu = document.createElement('select');
+    control_panel_menu.className = 'demo_control_panel_option';
+    options.forEach(function(o) {control_panel_menu.innerHTML+=("<option>"+o+"</option>")});
+    $(control_panel_menu).on('change', action);
+    control_panel_options.appendChild(control_panel_menu);
+  };
+
+  var parent = {demo_div:demo_div, description_panel_div:description_panel, canvas:canvas};
+
+  var data = new dataset('MNIST', 'mnist/summary.json', 28, 1, 3000, 21, 'mnist/validation', ["0","1","2","3","4","5","6","7","8","9"]);
+  //var data = new dataset('ARTCLASS', 'artclass/summary.json', 48, 3, 108, 1, 'artclass/validation', ["1neoplastic", "2impressionist", "3expressionist", "4colorfield"]);
+  //var data = new dataset('GFRIEND', 'gfriend/summary.json', 42, 3, 750, 1, 'gfriend/validation', ["sowon", "yerin", "eunha", "yuju", "sinb", "umji"]);
+  demo(parent, width, height, data);
+  
+
+</script> 
+
+    </div>
+    
+    <footer>
+      Source: <a href="https://ml4a.github.io/demos/confusion_mnist/">https://ml4a.github.io/demos/confusion_mnist/</a>
+        <ul>
+            <li><a href="/about/">about</a></li>
+            <li><a href="/contribute/">contribute</a></li>
+            <li><a href="https://github.com/ml4a">github.com/ml4a</a></li>
+      </ul>
+    </footer>
+
+</script>
+  </body>
+</html>
