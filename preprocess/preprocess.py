@@ -47,7 +47,7 @@ if __name__ == '__main__':
     images = [images[i] for i in shuffler]
     labels = [labels[i] for i in shuffler]
 
-    with tf.python_io.TFRecordWriter(os.path.join('..', 'tensorflow', 'data', '%s_%s' % (FLAGS.dataset, FLAGS.trainval))) as writer:
+    with tf.python_io.TFRecordWriter(os.path.join('..', 'data', '%s_%s' % (FLAGS.dataset, FLAGS.trainval))) as writer:
         for i in range(n):
             example = tf.train.Example(features=tf.train.Features(feature={
                 'image': tf.train.Feature(bytes_list=tf.train.BytesList(value=[images[i].tostring()])),
@@ -59,5 +59,5 @@ if __name__ == '__main__':
     confusion = np.array(images).transpose(3, 0, 1, 2).reshape(3, -1, FLAGS.size * FLAGS.size).transpose(1, 2, 0).astype(np.uint8)
     confusion_data = tf.placeholder(dtype=tf.uint8)
     confusion_png = tf.image.encode_png(confusion_data)
-    confusion_file = tf.write_file(os.path.join('..', 'tensorflow', 'confusion', FLAGS.dataset, '%s_batch_0.png' % FLAGS.trainval), confusion_png)
+    confusion_file = tf.write_file(os.path.join('..', 'confusion', FLAGS.dataset, '%s_batch_0.png' % FLAGS.trainval), confusion_png)
     sess.run([confusion_file], feed_dict = {confusion_data: confusion})
